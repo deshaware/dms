@@ -1,0 +1,48 @@
+{
+  "name": "dms",
+  "version": "1.0.0",
+  "description": "Document Management System",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "test": "jest --coverage --detectOpenHandles "
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deshaware/dms.git"
+  },
+  "keywords": [
+    "Node",
+    "Express"
+  ],
+  "author": "Swapnil Deshaware",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deshaware/dms/issues"
+  },
+  "homepage": "https://github.com/deshaware/dms#readme",
+  "dependencies": {
+    "aws-sdk": "^2.725.0",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.27",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
+    "uuid4": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^26.2.2",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
+}
