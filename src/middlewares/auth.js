@@ -13,7 +13,6 @@ const auth = async (req, res, next) => {
         }
         req.token = token
         req.user = user
-        console.log(user.username)
         next()
     } catch (error) {
         res.status(401).send({ status: 'FAILED', message: 'Failed to authorize user', error:error.message})
