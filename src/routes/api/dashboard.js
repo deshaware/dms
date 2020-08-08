@@ -50,24 +50,38 @@ router.get('/', auth, async (req, res) => {
 });
 
 router.get('/getFiles', auth, async (req, res) => {
-    const { folderName } = req.body;
-    // if no folderName, then find it in a root directory
-    const { _id } = req.user;
-    console.log('hi')
-    //get all folders except the home one
-    // let folders = await Directory.find({ 
-    //     isDeleted: false,
-    //     owner_id: _id
-    // } ).populate('owner_id').exec();
-    let files = await File.find({
-        isDeleted: false,
-        owner_id: _id
-    }, [
-        'fileName',
-        'dir_id'
-    ]).populate('dir_id').exec();
-    console.log(files)
-    files ? res.send(200) : res.send(404)
+    try {
+        const { folderName } = req.body;
+        // if no folderName provided, try to get files in root directory
+        const { _id } = req.user;
+        //get all folders except the home one
+        let files = await File.find({
+            isDeleted: false,
+            owner_id: _id
+        }, [
+            'fileName',
+            'dir_id',
+            'fileContent'
+        ]).populate('dir_id').exec();
+        files = files.filter( file => file.dir_id.folderName.replace('/my-drive', ''))
+            .map( file => {
+                return {
+                    fileName: file.fileName,
+                    fileContent: file.fileContent,
+                    folderName: file.dir_id.path === '/my-drive' ? '' : file.dir_id.folderName,
+                    path: file.dir_id.path + '/' + file.fileName
+                }
+            });
+        const response = {
+            status: 'SUCCESS',
+            message: 'Files and Folders retrieved successfully',
+            response:{ files }
+        };
+        res.status(200).send(response)
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({ status: 'FAILED', error: error.message })
+    }
 });
 
 module.exports = router;
