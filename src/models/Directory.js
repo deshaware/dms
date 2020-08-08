@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const User = require("./User");
 const directorySchema = new mongoose.Schema({
-    name:{
+    folderName:{
         type: String,
         required: true,
+        lowercase: true,
         maxlength : [100,"Too many characters"],
         trim:true
     },
@@ -40,7 +41,7 @@ const directorySchema = new mongoose.Schema({
 
 directorySchema.statics.createRootFolder = async ( { _id }) => {
     try {
-        const rootFolder = new Directory( { name:'my-drive', path:'/my-drive', owner_id: _id, createdBy: _id, updatedBy: _id })
+        const rootFolder = new Directory( { folderName:'my-drive', path:'/my-drive', owner_id: _id, createdBy: _id, updatedBy: _id })
         await rootFolder.save()
     } catch (error) {
         console.log(error)

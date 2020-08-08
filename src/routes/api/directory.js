@@ -12,9 +12,9 @@ router.post('/createFolder', auth, async( req, res ) => {
         validateName(folderName);
         //assuming no subfolders
         const rootFolder = await Directory.findOne({ path: '/my-drive', owner_id: _id, isDeleted: false })
-        const newFolder = new Directory({ folderName, 
+        const newFolder = new Directory({ folderName: folderName.toLowerCase(), 
             parent_id: rootFolder._id, 
-            path: '/my-drive/'+ folderName,  
+            path: '/my-drive/'+ folderName.toLowerCase(),  
             owner_id: _id,  
             createdBy: _id,  
             updatedBy: _id 

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const Directory = require('./Directory');
 const userSchema = new mongoose.Schema({
     username:{
         type: String,
@@ -52,7 +51,7 @@ userSchema.methods.isUserExit = async function() {
 
 userSchema.methods.generateAuthToken = async function(){
     const user = this;
-    const token = await jwt.sign({ _id:user._id.toString() }, process.env.SECRET );
+    const token = await jwt.sign({ _id:user._id.toString()}, process.env.SECRET );
     console.log(token)
     user.authTokens = user.authTokens.concat({ token });
     await user.save()

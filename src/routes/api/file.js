@@ -13,11 +13,11 @@ router.post('/createFile', auth, async ( req, res ) => {
             throw new Error("Please provide valid fileName and content ");
         const { _id } = req.user;
         validateName(fileName);
-        const path = folderName ? '/my-drive/' + folderName : '/my-drive';
+        const path = folderName ? '/my-drive/' + folderName.toLowerCase() : '/my-drive';
         const folder = await Directory.findOne({ path, owner_id: _id, isDeleted: false })
         if(!folder)
             throw new Error(`${folderName} not found! You may want to create a new folder before adding a file`)
-        const newFile = new File({ fileName,
+        const newFile = new File({ fileName: fileName.toLowerCase(),
             fileContent,
             parent_id: folder._id, 
             owner_id: _id,
@@ -32,7 +32,7 @@ router.post('/createFile', auth, async ( req, res ) => {
             status: 'SUCCESS',
             message: 'File created Successfully',
             response: { 
-                fileName: fileName,
+                fileName: fileName.toLowerCase(),
             }
         });
     } catch (error) {

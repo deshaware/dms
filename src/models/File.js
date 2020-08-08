@@ -3,6 +3,7 @@ const fileSchema = new mongoose.Schema({
     fileName: {
         type: String,
         required: true,
+        lowercase: true,
         maxlength : [100,"Too many characters"],
         trim:true
     },

@@ -18,10 +18,12 @@ const hello = require('./routes/hello');
 const user = require('./routes/api/user');
 const directory = require('./routes/api/directory');
 const file = require('./routes/api/file');
+const dashboard = require('./routes/api/dashboard');
 app.use('/hello', hello);
 app.use('/api/v1/user', user);
 app.use('/api/v1/folder', directory);
 app.use('/api/v1/file', file);
+app.use('/api/v1/dashboard', dashboard);
 
 //Documentation
 const swaggerOptions = {
