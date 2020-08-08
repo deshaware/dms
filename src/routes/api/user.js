@@ -4,12 +4,25 @@ const Directory = require('../../models/Directory');
 
 /**
  * @swagger
- * /signup:
+ * /user/signup:
  *  post:
  *      summary: Signup New User
  *      description: Creates a user and returns a token
  *      tags:
  *          - signup
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema: # Request body contents
+ *                      type:
+ *                          object
+ *                      properties:
+ *                          username:
+ *                              type:
+ *                                  string
+ *                          password:
+ *                              type:
+ *                                  string
  *      responses:
  *          201:
  *              description: Creates a user and Returns a user with token
@@ -36,7 +49,7 @@ router.post('/signup', async ( req, res ) => {
 
 /**
  * @swagger
- * /login:
+ * /user/login:
  *  post:
  *      summary: Login User
  *      description: Creates a user and returns a token
@@ -70,7 +83,6 @@ router.post('/login', async (req, res) => {
         const { username, password } = req.body;
         const user = await User.findByCredentials(username, password)
         const token = await user.generateAuthToken()
-        console.log("user")
         res.status(200).send({ status: 'SUCCESS', message: 'Logged In!', response:{ user,token } });
     } catch (error) {
         res.status(400).send({ status: 'FAILED', message: 'Could not log in', error:error.message})

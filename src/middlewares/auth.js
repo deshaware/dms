@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     try {
         let token = req.header('Authorization');
         if(!token) throw new Error('User not authenticated')
-        token = token.replace('bearer ', '')
+        token = token.replace('Bearer ', '')
         const decode = jwt.verify( token, process.env.SECRET);
         const user = await User.findOne({ _id: decode._id, 'authTokens.token':token });
         if(!user){

@@ -1,0 +1,16 @@
+openapi: 3.0.1
+info:
+  title: DMS API Specification
+  version: 1.0.0
+  description: Open documentation for LMS API
+servers:
+- url: http://localhost:3000/
+apis: ['api/v1/login.js']
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

@@ -3,7 +3,23 @@ const Directory = require('../../models/Directory');
 const File = require('../../models/File');
 const auth = require("../../middlewares/auth");
 
-//tested
+/**
+ * @swagger
+ * /dashboard:
+ *  get:
+ *      summary: Dashboard for the logged in user
+ *      description: Retrieves all the folders and files without folders
+ *      tags:
+ *          - Dashboard
+ *      responses:
+ *          401:
+ *              description: Unauthorized
+ *          400:
+ *              description: Failed to retrieve files and folders
+ *          200:
+ *              description: Files and Folders retrieved successfully
+ * 
+ */
 router.get('/', auth, async (req, res) => {
     try {
         const { _id } = req.user;
@@ -46,7 +62,7 @@ router.get('/', auth, async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.log(error)
-        res.status(400).send({ status: 'FAILED', error: error.message })
+        res.status(400).send({ status: 'FAILED', message:'Failed to retrieve files and folders', error: error.message })
     }
 });
 

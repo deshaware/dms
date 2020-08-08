@@ -43,7 +43,6 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.isUserExit = async function() {
     const user = this;
     const userName = await mongoose.models.User.countDocuments({username: user.username  });
-    console.log(userName)
     if(userName > 0 )
         throw new Error(`User with username ${user.username} already exist`);
 }
@@ -52,7 +51,6 @@ userSchema.methods.isUserExit = async function() {
 userSchema.methods.generateAuthToken = async function(){
     const user = this;
     const token = await jwt.sign({ _id:user._id.toString()}, process.env.SECRET );
-    console.log(token)
     user.authTokens = user.authTokens.concat({ token });
     await user.save()
     return token;
