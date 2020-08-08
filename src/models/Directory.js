@@ -13,15 +13,37 @@ const directorySchema = new mongoose.Schema({
         trim:true
     },
     parent_id:{
-        type: Schema.Types.ObjectId, 
+        type: mongoose.Schema.Types.ObjectId, 
         ref: 'Directory'
     },
-    user_id: { 
-        type: Schema.Types.ObjectId, 
+    isDeleted:{
+        type: Boolean,
+        default: false
+    },
+    createdBy: { 
+        type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
         required: true 
     },
-    createdBy
-},{timestamps:true});
+    updatedBy: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',
+        required: true 
+    },
+},{ timestamps:true });
 
-module.exports = Directory = mongoose.model('Directory',directorySchema);
+directorySchema.statics.createRootFolder = async (user) => {
+    try {
+        const rootFolder = new Directory( { name:'my-drive', path:'/my-drive', createdBy: user._id })
+        await rootFolder.save()
+    } catch (error) {
+        console.log(error)
+        throw new Error("Could not create a root directory for user")
+    }
+}
+
+directorySchema.methods.validateCreateDirectory = () => {
+    console.log()
+}
+
+module.exports = Directory = mongoose.model('Directory', directorySchema);

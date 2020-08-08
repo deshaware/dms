@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models/User');
+const Directory = require('../../models/Directory');
 
 /**
  * @swagger
@@ -21,12 +22,13 @@ const User = require('../../models/User');
 router.post('/signup', async ( req, res ) => {
     try {
         let { username, password } = req.body;
-        if(!username || !password)
+        if( !username || !password )
             res.status(422).send({ message: 'FAILED', error: 'Invalid Input, please provide username and password'})
-        const user = new User({username, password})
+        const user = new User({ username, password });
         await user.isUserExit();
+        await Directory.createRootFolder(user);
         const token = await user.generateAuthToken();
-        res.status(201).send({ message: 'SUCCESS', response:{ user,token} });
+        res.status(201).send({ message: 'SUCCESS', response: { user,token }});
     } catch (error) {
         res.status(400).send({ message: 'FAILED', error:error.message})
     }
