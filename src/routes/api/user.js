@@ -23,14 +23,14 @@ router.post('/signup', async ( req, res ) => {
     try {
         let { username, password } = req.body;
         if( !username || !password )
-            res.status(422).send({ message: 'FAILED', error: 'Invalid Input, please provide username and password'})
+            res.status(422).send({ status: 'FAILED', error: 'Invalid Input, please provide username and password'})
         const user = new User({ username, password });
         await user.isUserExit();
         await Directory.createRootFolder(user);
         const token = await user.generateAuthToken();
-        res.status(201).send({ message: 'SUCCESS', response: { user,token }});
+        res.status(201).send({ status: 'SUCCESS', message: 'User Signed up successfully', response: { user,token }});
     } catch (error) {
-        res.status(400).send({ message: 'FAILED', error:error.message})
+        res.status(400).send({ status: 'FAILED', message: 'Could not create user', error:error.message})
     }
 });
 
@@ -71,9 +71,9 @@ router.post('/login', async (req, res) => {
         const user = await User.findByCredentials(username, password)
         const token = await user.generateAuthToken()
         console.log("user")
-        res.status(200).send({ message: 'SUCCESS', response:{ user,token } });
+        res.status(200).send({ status: 'SUCCESS', message: 'Logged In!', response:{ user,token } });
     } catch (error) {
-        res.status(400).send({ message: 'FAILED', error:error.message})
+        res.status(400).send({ status: 'FAILED', message: 'Could not log in', error:error.message})
     }
 });
 

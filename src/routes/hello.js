@@ -30,8 +30,7 @@ const route = require("express").Router();
  *                      
  */
 route.get("/", (req, res) => {
-    console.log("hi")
-    res.status(200).send({ message: "Hello", status: "Success", response: "Hi there!"});
+    res.status(200).send({ message: 'Hi', status: "Success", response: "Hi there!"});
 });
 
 module.exports = route;

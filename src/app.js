@@ -20,6 +20,8 @@ const directory = require('./routes/api/directory');
 const file = require('./routes/api/file');
 app.use('/hello', hello);
 app.use('/api/v1/user', user);
+app.use('/api/v1/folder', directory);
+app.use('/api/v1/file', file);
 
 //Documentation
 const swaggerOptions = {
@@ -43,6 +45,8 @@ const swaggerOptions = {
     apis: [
         __dirname + '/routes/hello.js', 
         __dirname + '/routes/api/user.js',
+        __dirname + '/routes/api/directory.js',
+        __dirname + '/routes/api/file.js',
     ]
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

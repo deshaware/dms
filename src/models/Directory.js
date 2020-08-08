@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require("./User");
 const directorySchema = new mongoose.Schema({
     name:{
         type: String,
@@ -11,6 +12,11 @@ const directorySchema = new mongoose.Schema({
         required: true,
         maxlength : [1000,"Too many characters"],
         trim:true
+    },
+    owner_id: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User',
+        required: true 
     },
     parent_id:{
         type: mongoose.Schema.Types.ObjectId, 
@@ -32,9 +38,9 @@ const directorySchema = new mongoose.Schema({
     },
 },{ timestamps:true });
 
-directorySchema.statics.createRootFolder = async (user) => {
+directorySchema.statics.createRootFolder = async ( { _id }) => {
     try {
-        const rootFolder = new Directory( { name:'my-drive', path:'/my-drive', createdBy: user._id })
+        const rootFolder = new Directory( { name:'my-drive', path:'/my-drive', owner_id: _id, createdBy: _id, updatedBy: _id })
         await rootFolder.save()
     } catch (error) {
         console.log(error)
@@ -42,8 +48,12 @@ directorySchema.statics.createRootFolder = async (user) => {
     }
 }
 
-directorySchema.methods.validateCreateDirectory = () => {
-    console.log()
+directorySchema.methods.validateCreateDirectory = async function({ _id}) {
+    let newFolder = this;
+    const isExit = await Directory.findOne({ path: newFolder.path, owner_id: _id, isDeleted:false });
+    if(isExit) 
+        throw new Error("Folder already exists")
+    return
 }
 
 module.exports = Directory = mongoose.model('Directory', directorySchema);
