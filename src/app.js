@@ -2,11 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
-process.env.NODE_ENV = 'dev'
+require("./config")
 console.log('Environment', process.env.NODE_ENV );
 
-require("./config")
 const app = express();
 
 //middleware
@@ -14,12 +12,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Routes
-const hello = require('./routes/hello');
 const user = require('./routes/api/user');
 const directory = require('./routes/api/directory');
 const file = require('./routes/api/file');
 const dashboard = require('./routes/api/dashboard');
-app.use('/hello', hello);
 app.use('/api/v1/user', user);
 app.use('/api/v1/folder', directory);
 app.use('/api/v1/file', file);
@@ -30,11 +26,11 @@ const swaggerOpenApiOptions =  {
     swaggerDefinition : {
         openapi: '3.0.1',
         info: {
-        title: 'Document Management System API Specification', 
-        version: '1.0.0', 
-        description: 'OpenAPI documentation for Document Managemet System', 
+            title: 'Document Management System API Specification', 
+            version: '1.0.0', 
+            description: 'OpenAPI documentation for Document Managemet System', 
         },
-        servers: [{url: 'http://localhost:3000/api/v1'}],
+        servers: [{url: `${process.env.URL}/api/v1`}],
         components: {
             securitySchemes: {
                 bearerAuth: {
@@ -49,7 +45,6 @@ const swaggerOpenApiOptions =  {
         }],
     },
     apis: [
-        __dirname + '/routes/hello.js', 
         __dirname + '/routes/api/user.js',
         __dirname + '/routes/api/directory.js',
         __dirname + '/routes/api/file.js',
@@ -63,8 +58,11 @@ app.get('/api-docs.json', (req, res) => {
 })
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
+app.get('/', (req, res) => res.status(200).send({message:'DMS App is up and running'}))
+
 //Serve
 const server = app.listen(process.env.PORT,
-     () => console.log('App listening on port 3000'));
+     () => console.log(`App listening on port ${process.env.PORT}`
+));
 
 module.exports = { app, server };

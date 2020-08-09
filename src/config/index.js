@@ -2,7 +2,7 @@ const env = require('dotenv');
 const path = require('path');
 const mongoose = require('mongoose')
 
-let result = env.config({ path: path.join( __dirname, '..', '..', '.env') });
+let result = process.env.NODE_ENV === 'dev' ? env.config({ path: path.join( __dirname, '..', '..', '.env') }) : null;
 if(result.error) throw result.error;
 
 //Database

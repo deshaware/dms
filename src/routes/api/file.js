@@ -98,7 +98,7 @@ router.post('/createFile', auth, async ( req, res ) => {
  *          400:
  *              description: Failed to retrieve files 
  *          200:
- *              description: Files and Folders retrieved successfully
+ *              description: Files retrieved successfully
  * 
  */
 router.get('/getFiles/', auth, async (req, res) => {
@@ -205,4 +205,5 @@ router.get('/getAllFiles', auth, async (req, res) => {
         res.status(400).send({ status: 'FAILED', error: error.message })
     }
 });
+
 module.exports = router;
