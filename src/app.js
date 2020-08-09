@@ -46,9 +46,9 @@ const swaggerOpenApiOptions =  {
     },
     apis: [
         __dirname + '/routes/api/user.js',
+        __dirname + '/routes/api/dashboard.js',
         __dirname + '/routes/api/directory.js',
-        __dirname + '/routes/api/file.js',
-        __dirname + '/routes/api/dashboard.js'
+        __dirname + '/routes/api/file.js'
     ]
   };
 const swaggerDocs = swaggerJsDoc(swaggerOpenApiOptions);

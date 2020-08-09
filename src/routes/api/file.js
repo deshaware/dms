@@ -12,7 +12,7 @@ const { checkIfFolderExist, checkIfFileExist, getFiles, moveFileToDestinationFol
  *      summary: Creates a File
  *      description: If no folderName parameter specified, the file will be created in root folder
  *      tags:
- *          - createFile
+ *          - Create a file
  *      requestBody:
  *          content:
  *              application/json:
@@ -81,7 +81,7 @@ router.post('/createFile', auth, async ( req, res ) => {
  *      summary: Gets all the files inside the folder
  *      description: Retrieve files inside the folder, If no folderName speficied, it will return file inside the root directory
  *      tags:
- *          - GetFiles
+ *          - Get files
  *      parameters:
  *      - name: folderName
  *        in: 'query'
@@ -126,7 +126,7 @@ router.get('/getFiles/', auth, async (req, res) => {
  *      summary: Move file from soureFolder to destinationFolder
  *      description: Move the specified file, If no folderName speficied, then respective folder will be treated as root directory
  *      tags:
- *          - MoveFile
+ *          - Move a file
  *      requestBody:
  *          content:
  *              application/json:

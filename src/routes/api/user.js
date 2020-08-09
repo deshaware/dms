@@ -9,7 +9,7 @@ const Directory = require('../../models/Directory');
  *      summary: Signup New User
  *      description: Creates a user and returns a token
  *      tags:
- *          - signup
+ *          - Sign-up
  *      requestBody:
  *          content:
  *              application/json:
@@ -54,7 +54,7 @@ router.post('/signup', async ( req, res ) => {
  *      summary: Login User
  *      description: Creates a user and returns a token
  *      tags:
- *          - login
+ *          - Login
  *      requestBody:
  *          content:
  *              application/json:

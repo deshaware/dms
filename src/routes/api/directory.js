@@ -10,7 +10,7 @@ const validateName = require("../../services/nameValidation.service");
  *      summary: Creates a new folder 
  *      description: Creates a new folder under root directory
  *      tags:
- *          - createFolder
+ *          - Create a folder
  *      requestBody:
  *          content:
  *              application/json:
