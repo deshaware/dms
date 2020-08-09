@@ -26,42 +26,13 @@ app.use('/api/v1/file', file);
 app.use('/api/v1/dashboard', dashboard);
 
 //Documentation
-const swaggerOptions = {
-    swaggerDefinition:{
-        swagger: '2.0',
-        info: {
-            version: '1.0.0',
-            title: 'Document Management System',
-            description: 'This is some description',
-            contact: {
-                name: 'Swapnil Deshaware'
-            },
-            server:['http://localhost:3000']
-        },
-        host: 'localhost:3000',
-        basePath: '/',
-        schemes: [ 'http', 'https' ],
-        consumes: [ 'application/json' ],
-        produces: [ 'application/json' ],
-        authAction :{ JWT: {name: "JWT", schema: {type: "apiKey", in: "header", name: "Authorization", description: ""}, value: "Bearer <JWT>"} },
-    },
-    apis: [
-        __dirname + '/routes/hello.js', 
-        __dirname + '/routes/api/user.js',
-        __dirname + '/routes/api/directory.js',
-        __dirname + '/routes/api/file.js',
-        __dirname + '/routes/api/dashboard.js'
-    ]
-};
-
 const swaggerOpenApiOptions =  {
     swaggerDefinition : {
         openapi: '3.0.1',
         info: {
-        // API informations (required)
-        title: 'DMS API Specification', // Title (required)
-        version: '1.0.0', // Version (required)
-        description: 'OpenAPI documentation for LMS', // Description (optional)
+        title: 'Document Management System API Specification', 
+        version: '1.0.0', 
+        description: 'OpenAPI documentation for Document Managemet System', 
         },
         servers: [{url: 'http://localhost:3000/api/v1'}],
         components: {

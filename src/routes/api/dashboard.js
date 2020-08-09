@@ -28,27 +28,27 @@ router.get('/', auth, async (req, res) => {
             isDeleted: false, 
             owner_id: _id 
         }, [
-            'path','folderName'
+            'path','folderName', 'createdAt', 'updatedAt'
         ]);
         folders = folders.filter( folder => folder.path.replace('/my-drive', ''))
-            .map( file => { 
+            .map( folder => { 
                 return {
-                    folderName: file.folderName,
-                    path: file.path
+                    folderName: folder.folderName,
+                    path: folder.path,
+                    createdAt: folder.createdAt,
+                    updatedAt: folder.updatedAt
             }});
         let files = await File.find({
             isDeleted: false,
             owner_id: _id
-        }, [
-            'fileName',
-            'dir_id',
-            'fileContent'
-        ]).populate('dir_id').exec();
+        }).populate('dir_id').exec();
         files = files.filter( file => file.dir_id.path === '/my-drive')
             .map( file => {
                 return {
                     fileName: file.fileName,
-                    fileContent: file.fileContent
+                    fileContent: file.fileContent,
+                    createdAt: file.createdAt,
+                    updatedAt: file.updatedAt
                 }
             });
         const response = {

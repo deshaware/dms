@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
         req.user = user
         next()
     } catch (error) {
-        res.status(401).send({ status: 'FAILED', message: 'Failed to authorize user', error:error.message})
+        res.status(401).send({ status: 'FAILED', message: 'Failed to identify the user', error:error.message})
     }
 };
 module.exports = auth;

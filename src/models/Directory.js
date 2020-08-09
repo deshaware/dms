@@ -49,7 +49,7 @@ directorySchema.statics.createRootFolder = async ( { _id }) => {
     }
 }
 
-directorySchema.methods.validateCreateDirectory = async function({ _id}) {
+directorySchema.methods.validateCreateDirectory = async function({ _id }) {
     let newFolder = this;
     const isExit = await Directory.findOne({ path: newFolder.path, owner_id: _id, isDeleted:false });
     if(isExit) 

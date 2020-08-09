@@ -3,6 +3,35 @@ const Directory = require('../../models/Directory');
 const auth = require("../../middlewares/auth");
 const validateName = require("../../services/nameValidation.service");
 
+/**
+ * @swagger
+ * /folder/createFolder:
+ *  post:
+ *      summary: Creates a new folder 
+ *      description: Creates a new folder under root directory
+ *      tags:
+ *          - createFolder
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema: # Request body contents
+ *                      type:
+ *                          object
+ *                      properties:
+ *                          folderName:
+ *                              type:
+ *                                  string
+ *      responses:
+ *          401:
+ *              description: Unauthorized
+ *          201:
+ *              description: Folder created Successfully
+ *          400:
+ *              description: Failed to create a folder
+ *          422:
+ *              description: Unprocessable Entity
+ * 
+ */
 router.post('/createFolder', auth, async( req, res ) => {
     try {
         const { folderName } = req.body;
@@ -31,7 +60,7 @@ router.post('/createFolder', auth, async( req, res ) => {
         });
     } catch (error) {
         console.log(error)
-        res.status(400).send({ status: 'FAILED', error: error.message })
+        res.status(400).send({ status: 'FAILED', message:'Failed to create a folder', error: error.message })
     }
 });
 

@@ -5,7 +5,41 @@ const auth = require("../../middlewares/auth");
 const validateName = require("../../services/nameValidation.service");
 const { checkIfFolderExist, checkIfFileExist, getFiles, moveFileToDestinationFolder } = require('../../services/directory.service');
 
-//tested
+/**
+ * @swagger
+ * /file/createFile:
+ *  post:
+ *      summary: Creates a File
+ *      description: If no folderName parameter specified, the file will be created in root folder
+ *      tags:
+ *          - createFile
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema: # Request body contents
+ *                      type:
+ *                          object
+ *                      properties:
+ *                          fileName:
+ *                              type:
+ *                                  string
+ *                          fileContent:
+ *                              type:
+ *                                  string
+ *                          folderName:
+ *                              type:
+ *                                  string
+ *      responses:
+ *          201:
+ *              description: creates a file
+ *          400:
+ *              description: Could not create file
+ *          401:
+ *              description: Unauthorized
+ *          422:
+ *              description: Unprocessable Entity
+ * 
+ */
 router.post('/createFile', auth, async ( req, res ) => {
     try {
         const { fileName, fileContent, folderName } = req.body;
@@ -27,7 +61,6 @@ router.post('/createFile', auth, async ( req, res ) => {
         });
         await newFile.validateFileName( req.user, folder )
         await newFile.save();
-        console.log(newFile.path)
         res.status(201).send({ 
             status: 'SUCCESS',
             message: 'File created Successfully',
@@ -41,14 +74,39 @@ router.post('/createFile', auth, async ( req, res ) => {
     }
 });
 
-//tested
-router.get('/getFiles/:folderName', auth, async (req, res) => {
+/**
+ * @swagger
+ * /file/getFiles:
+ *  get:
+ *      summary: Gets all the files inside the folder
+ *      description: Retrieve files inside the folder, If no folderName speficied, it will return file inside the root directory
+ *      tags:
+ *          - GetFiles
+ *      parameters:
+ *      - name: folderName
+ *        in: 'query'
+ *        description: Fetches files under specified value below
+ *        required: true
+ *        schema:
+ *          type: string 
+ *      security:
+ *      - bearerAuth:
+ *          - auth
+ *      responses:
+ *          401:
+ *              description: Unauthorized
+ *          400:
+ *              description: Failed to retrieve files 
+ *          200:
+ *              description: Files and Folders retrieved successfully
+ * 
+ */
+router.get('/getFiles/', auth, async (req, res) => {
     try {
         const { _id } = req.user;
-        const { folderName } = req.params;
-
-        if(!checkIfFolderExist(folderName.toLowerCase(), _id))
-            throw new Error(`Folder ${folderName} does not exist`);
+        const { folderName } = req.query;
+        if(!folderName)
+            throw new Error("Please provde a valid folderName query parameter")
         const files = await getFiles(folderName.toLowerCase(), _id);
         res.status(200).send({
             status: 'SUCCESS',
@@ -61,8 +119,40 @@ router.get('/getFiles/:folderName', auth, async (req, res) => {
     }
 });
 
-//not tested
-router.put('/moveFile/', auth, async ( req , res) => {
+/**
+ * @swagger
+ * /file/moveFile:
+ *  put:
+ *      summary: Move file from soureFolder to destinationFolder
+ *      description: Move the specified file, If no folderName speficied, then respective folder will be treated as root directory
+ *      tags:
+ *          - MoveFile
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema: # Request body contents
+ *                      type:
+ *                          object
+ *                      properties:
+ *                          fileName:
+ *                              type:
+ *                                  string
+ *                          sourceFolder:
+ *                              type:
+ *                                  string
+ *                          destinationFolder:
+ *                              type:
+ *                                  string
+ *      responses:
+ *          401:
+ *              description: Unauthorized
+ *          400:
+ *              description: Could not move file 
+ *          200:
+ *              description: Files and Folders retrieved successfully
+ * 
+ */
+router.put('/moveFile', auth, async ( req , res) => {
     try {
         const { _id } = req.user;
         let { fileName, sourceFolder, destinationFolder } = req.body;
@@ -75,7 +165,7 @@ router.put('/moveFile/', auth, async ( req , res) => {
         if(!await checkIfFileExist(fileName.toLowerCase(), sourceFolder ? sourceFolder.toLowerCase() : null, _id))
             throw new Error(`Could not find file "${fileName}" in ${sourceFolder}`);
         await moveFileToDestinationFolder(fileName.toLowerCase(), destinationFolder ? destinationFolder.toLowerCase(): null, _id);
-        res.status(201).send({ status: 'SUCCESS', message: 'File moved Successfully'});
+        res.status(200).send({ status: 'SUCCESS', message: 'File moved Successfully'});
     } catch (error) {
         res.status(400).send({ status: 'FAILED', message: 'Could not move file', error: error.message })
     }
