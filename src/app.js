@@ -70,8 +70,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.get('/', (req, res) => res.status(200).send({message:'DMS App is up and running'}))
 
 //Serve
-const server = app.listen(process.env.PORT,
-     () => console.log(`App listening on port ${process.env.PORT}`
+const server = app.listen(process.env.PORT || 3000,
+     () => console.log(`App listening on port ${process.env.PORT || 3000}`
 ));
 
 module.exports = { app, server };
